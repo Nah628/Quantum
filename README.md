@@ -1,10 +1,10 @@
-## Quantum Codes
+# Quantum Codes
 コードは基本的にMatlabで書いていますが、tiffファイルの読み込みはPythonの方が速いかも？？？  
 > [!WARNING]  
 > 基本的に実行時間が長いので注意してください。
 > 特に、３次元tiffファイルの読み込み中は、パソコンの動作が遅くなったりします。
 
-### Coincidence Measurement  
+## Coincidence Measurement  
 強度相関測定関連のプログラム。光子対の同時計測性を評価します。
 |ファイル名|内容|
 |----|----|
@@ -14,7 +14,7 @@
 |sum_coordinate.m|和座標投影（運動量相関）を計算|
 |minus_coordinate.m|差座標投影（位置相関）を計算|
 
-### Distillation Simulation
+## Distillation Simulation
 量子画像蒸留シミュレーション
 |ファイル名|内容|
 |----|----|
@@ -22,7 +22,7 @@
 |Functions|光子分布作成などの細々とした関数が保存されているフォルダ|
 |alive_cat.bmp <br> dead_cat.bmp|二値の画像マスク|
 
-### Distillation
+## Distillation
 実験で取得したデータに対して、量子画像蒸留を実施。
 |ファイル名|内容|
 |----|----|
