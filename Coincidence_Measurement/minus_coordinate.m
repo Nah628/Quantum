@@ -28,7 +28,7 @@ numFrames = 0;
 figNumber = 1;
 
 tic
-for dataSetNumber = 1:1%dataSet
+for dataSetNumber = 1:dataSet
     fprintf('Dataset : %d\n', dataSetNumber);
     filePath = fullfile(folderPath, fileList(dataSetNumber).name);
    
@@ -188,3 +188,4 @@ function spdc_photons0 = readFile(tiff_photonsFile)
   spdc_photons0 = single(spdc_photons0);
   % spdc_photons0 = spdc_photons0 / 255;
 end
+
