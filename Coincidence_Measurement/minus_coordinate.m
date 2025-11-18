@@ -28,7 +28,7 @@ numFrames = 0;
 figNumber = 1;
 
 tic
-for dataSetNumber = 1:dataSet
+for dataSetNumber = 1:1%dataSet
     fprintf('Dataset : %d\n', dataSetNumber);
     filePath = fullfile(folderPath, fileList(dataSetNumber).name);
    
@@ -117,8 +117,8 @@ intensityCorr_all = padded_intensityCorr(delta+1:delta+height,delta+1:delta+widt
 minusCoordinate = zeros(2*height, 2*width);
 num_pixels = height*width;
 
-for x = 30:60
-    for y = 30:60
+for x = 1:width
+    for y = 1:height
         % 相関マップが格納されているページを求める
         idx = (y-1)*height + x;
         currentMap = intensityCorr_all(:,:,idx);
@@ -137,17 +137,43 @@ for x = 30:60
     end
 end
 
-minusCoordinate(101,:) =  (minusCoordinate(101-1,:) + minusCoordinate(101+1,:))/2;
+%{
+for idx = 1:num_pixels
+    currentMap = intensityCorr_all(:,:,idx);
 
-minusCoordinate_2 = minusCoordinate(51:150,51:150);
+    % 相関マップのインデックス番号から、どの画素との相関マップかを求める
+    y = ceil(idx / height);      % y座標
+    x = mod(idx - 1, width) + 1; % x座標
+    fprintf('progress >>> (%d, %d)', x,y);
+
+    % minus-coordinate用の配列におけるスタート位置を求める
+    y_start = height + 1 - (y-1);
+    y_end = y_start + (height-1);
+    x_start = width + 1 - (x-1);
+    x_end = x_start + (width-1);
+    fprintf('    y : %d ~ %d, x : %d ~ %d\n', y_start,y_end, x_start,x_end);
+
+    % minus-coordinate配列を更新
+    minusCoordinate(y_start:y_end, x_start:x_end) = minusCoordinate(y_start:y_end, x_start:x_end) + currentMap;
+
+end
+%}
+
+[h, w] = size(minusCoordinate);
+cx = ceil((w+1)/2);
+cy = ceil((h+1)/2);
+
+% smearingの補正
+minusCoordinate(cy,:) =  (minusCoordinate(cy-1,:) + minusCoordinate(cy+1,:))/2;
+
+% 切り取り
+p2 = size(minusCoordinate,1)/4;
+minusCoordinate_2 = minusCoordinate(cy-height/2:cy+height/2, cx-width/2:cx+width/2); % (heigh+1)x(width+1)
 
 % 結果の表示
 figure(1);
 imagesc(minusCoordinate_2);
 axis equal tight
-axis xy
-set(gca, 'XTick', linspace(1, width, 5), 'XTickLabel', linspace(-width/2, width/2, 5));
-set(gca, 'YTick', linspace(1, height, 5), 'YTickLabel', linspace(-height/2, height/2, 5));
 set(gcf, 'Position', [500, 400, 600, 300]);
 
 title('Minus coordinate');
